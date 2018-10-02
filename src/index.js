@@ -3,7 +3,7 @@ const { registerBlockType } = wp.blocks;
 const { RichText, InspectorControls } = wp.editor;
 const { RangeControl, TextControl } = wp.components;
 
-import { __ } from '@wordpress/i18n';
+import './index.scss';
 
 registerBlockType( 'gm18-recipe-block/recipe-block', {
 	title: __( 'Recipe' ),

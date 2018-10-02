@@ -44,5 +44,12 @@ function gm18_recipe_block_register_block() {
 	register_block_type( 'gm18-recipe-block/recipe-block', array(
 		'editor_script' => 'gm18_recipe_block',
 	) );
+
+	wp_register_style(
+		'gm18-recipes-styles',
+		gm18_recipe_block_plugin_url( 'dist/index.css' ),
+		array(),
+		time()
+	);
 }
 add_action( 'init', 'gm18_recipe_block_register_block' );
