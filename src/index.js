@@ -1,9 +1,32 @@
 const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
-const { RichText, InspectorControls } = wp.editor;
+const { RichText, InspectorControls, InnerBlocks } = wp.editor;
 const { RangeControl } = wp.components;
 
 import { __, sprintf } from '@wordpress/i18n';
+
+function getRecipeTemplate() {
+    return [
+        [ 'core/heading', {
+            	placeholder: 'Recipe Name',
+    		}
+    	],
+    	[ 'core/paragraph', {
+    			placeholder: 'Recipe Notes'
+			}
+		], // [ blockName, attributes ]
+        [ 'core/heading', {
+            content: 'List yo shit.',
+			level: 4,
+        }
+        ],
+        [ 'core/list', {
+    			placeholder: 'List your ingrediants'
+			}
+		]
+    ]
+}
+
 
 registerBlockType( 'gm18-recipe-block/recipe-block', {
 	title: __( 'Recipe' ),
@@ -60,9 +83,12 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					max={ 20 }
 				/>
 			</InspectorControls>
-			<textarea>
-				{props.attributes.title}
-			</textarea>
+			erkjnerjkenf
+            <InnerBlocks
+                template={ getRecipeTemplate() }
+                templateLock="all"
+                //allowedBlocks={ ALLOWED_BLOCKS }
+			/>
 		</p>;
 	},
 
