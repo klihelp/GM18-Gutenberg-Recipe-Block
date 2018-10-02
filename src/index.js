@@ -27,6 +27,20 @@ function getRecipeTemplate() {
     ]
 }
 
+function getRecipeOptionalTemplate() {
+    return [
+        [ 'core/paragraph', {
+            placeholder: 'Recipe Notes'
+        }
+        ], // [ blockName, attributes ]
+        [ 'core/heading', {
+            content: 'Optional stuff',
+            level: 4,
+        }
+        ],
+    ]
+}
+
 
 registerBlockType( 'gm18-recipe-block/recipe-block', {
 	title: __( 'Recipe' ),
@@ -87,6 +101,9 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
                 template={ getRecipeTemplate() }
                 templateLock="all"
                 //allowedBlocks={ ALLOWED_BLOCKS }
+			/>
+			<InnerBlocks
+				template={ getRecipeOptionalTemplate() }
 			/>
 		</p>;
 	},
