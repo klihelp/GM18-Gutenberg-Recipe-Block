@@ -71,7 +71,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 		return <div class="hrecipe jetpack-recipe" itemscope itemtype="https://schema.org/Recipe">
 			<h3 class="jetpack-recipe-title" itemprop="name">{ props.attributes.title }</h3>
 			<ul class="jetpack-recipe-meta">
-				<li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li>',
+				<li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li>
 			</ul>
 		</div>;
 	}
