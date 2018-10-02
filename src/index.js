@@ -83,7 +83,6 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					max={ 20 }
 				/>
 			</InspectorControls>
-			erkjnerjkenf
             <InnerBlocks
                 template={ getRecipeTemplate() }
                 templateLock="all"
