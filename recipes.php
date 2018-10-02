@@ -28,6 +28,10 @@ function gm18_recipe_block_plugin_url( $path ) {
  * @since 1.0.0
  */
 function gm18_recipe_block_register_block() {
+	if ( ! function_exists( 'register_block_type' ) ) {
+		return;
+	}
+
 	wp_register_script(
 		'gm18_recipe_block',
 		gm18_recipe_block_plugin_url( 'dist/index.js' ),
@@ -35,7 +39,7 @@ function gm18_recipe_block_register_block() {
 	);
 
 	register_block_type( 'gm18_recipe_block/recipe_block', array(
-			'editor_script' => 'gm18_recipe_block',
+		'editor_script' => 'gm18_recipe_block',
 	) );
 }
 
