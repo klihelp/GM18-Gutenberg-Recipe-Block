@@ -2,6 +2,7 @@ const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
 const { RichText, InspectorControls } = wp.editor;
 const { RangeControl, TextControl } = wp.components;
+const { __ } = wp.i18n;
 
 import './index.scss';
 
