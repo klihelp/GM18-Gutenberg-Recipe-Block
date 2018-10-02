@@ -1,5 +1,5 @@
 {
-  "name": "GM 2018 Gutenpies",
+  "name": "gm-2018-gutenpies",
   "version": "1.0.0",
   "description": "Teaching WordPresses how to cook",
   "main": "src/index.js",
