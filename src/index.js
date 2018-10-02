@@ -7,19 +7,39 @@ const { withState } = wp.compose;
 
 import { __, sprintf } from '@wordpress/i18n';
 
-function getRecipeTemplate() {
-    return [
-         // [ blockName, attributes ]
+
+function getRecipeTemplate( showNotes, showIngredients ) {
+
+
+    let template = [
+        // [ blockName, attributes ]
 
         [ 'core/heading', {
                 placeholder: 'Recipe Name',
             }
-        ],
-        [ 'core/paragraph', {
+        ]
+    ];
+
+    if(showNotes) {
+        template.push([ 'core/paragraph', {
                 placeholder: 'Recipe Notes'
             }
-        ],
-        [ 'gm18-recipe-block/locked-template-block', {}, [
+        ]);
+
+    }
+    if (showIngredients) {
+        template.push([
+            // [ blockName, attributes ]
+
+            [ 'core/heading', {
+                placeholder: 'Recipe Name',
+            }
+            ],
+            [ 'core/paragraph', {
+                placeholder: 'Recipe Notes'
+            }
+            ],
+            [ 'gm18-recipe-block/locked-template-block', {}, [ // Ingredients
                 [ 'core/heading', {
                     content: 'Ingredients',
                 }
@@ -29,8 +49,11 @@ function getRecipeTemplate() {
                 }
                 ]
             ]
-        ]
-    ]
+            ]
+        ]);
+    }
+    return template
+
 }
 
 function getRecipeNameTemplate() {
@@ -73,7 +96,7 @@ registerBlockType( 'gm18-recipe-block/locked-template-block', {
         inserter: false,
     },
 
-    edit() {
+    edit( props ) {
         return <InnerBlocks templateLock="all" />;
     },
 
@@ -89,6 +112,14 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 	category: 'common',
 	keywords: [ __( 'recipes' ), __( 'food' ), __( 'jetpack' ) ],
 	attributes: {
+	    showIngredients: {
+	        type: 'boolean',
+            default: true
+        },
+        showNotes: {
+	        type: 'boolean',
+            default: true
+        },
 		title: {
 			type: 'string',
 		},
@@ -119,37 +150,39 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 	},
 
 	// In the admin.
-	edit({ attributes, setAttributes, className }) {
+	edit( props ) {
 
-	    const { servings } = attributes;
+	    console.log(props.attributes.showIngredients);
 
-	    const updateServingsAttribute = servings => setAttributes({ servings });
-        const MyCheckboxControl = withState( {
-            isChecked: true,
-            } )( ( { isChecked, setState } ) => (
-                <CheckboxControl
-                    label="Recipe Ingredients"
-                    help="Does the Recipe have an unordered list of ingredients?"
-                    checked={ isChecked }
-                    onChange={ ( isChecked ) => { setState( { isChecked } ) } }
-                />
-        ) );
+	    const updateServingsAttribute = servings => props.setAttributes({ servings });
+        const RecipeCheckboxControl = function(key, value, labelMessage, helpMessage) {
 
+            return <CheckboxControl
+                label={labelMessage}
+                help={helpMessage}
+                checked={ value }
+                onChange={ ( isChecked ) => { props.setAttributes({ [ key ]: isChecked }) } }
+            />
+
+        };
 
         return <p className='recipe-options'>
 			<InspectorControls>
 				<RangeControl
 					label={ __( 'Servings' ) }
-					value={ servings }
+					value={ props.attributes.servings }
 					initialPosition={ 2 }
 					onChange={ updateServingsAttribute }
 					min={ 1 }
 					max={ 20 }
 				/>
-                <MyCheckboxControl />
+                { RecipeCheckboxControl('showIngredients', props.attributes.showIngredients, 'Ingredients', 'List Ingredients?')}
 			</InspectorControls>
             <InnerBlocks
-                template={ getRecipeTemplate() }
+                template={ getRecipeTemplate(
+                    true,
+                    true
+                )}
                 // templateLock="all"
                 //allowedBlocks={ ALLOWED_BLOCKS }
             />
