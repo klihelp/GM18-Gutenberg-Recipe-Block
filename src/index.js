@@ -1,10 +1,19 @@
 const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
-const { RichText, InspectorControls } = wp.editor;
-const { RangeControl, TextControl } = wp.components;
+const { RichText, InspectorControls, InnerBlocks } = wp.editor;
+const { RangeControl, TextControl, CheckboxControl } = wp.components;
 const { __ } = wp.i18n;
 
 import './index.scss';
+
+function getImageTemplate() {
+	return [
+		[ 'core/image', {
+				placeholder: __( 'Upload an image.' )
+			}
+		]
+	]
+}
 
 registerBlockType( 'gm18-recipe-block/recipe-block', {
 	title: __( 'Recipe' ),
@@ -26,7 +35,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			type: 'string',
 		},
 		print: {
-			type: 'string',
+			type: 'bool',
 		},
 		source: {
 			type: 'string',
@@ -71,6 +80,18 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			});
 		}
 
+		function updateDifficultyAttribute( newValue ) {
+			props.setAttributes({
+				difficulty: newValue
+			});
+		}
+
+		function updatePrintAttribute( newValue ) {
+			props.setAttributes({
+				print: newValue
+			});
+		}
+
 		function updateNotesAttribute( newValue ) {
 			props.setAttributes({
 				notes: newValue
@@ -97,12 +118,23 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					initialPosition={ 2 }
 					onChange={ updateServingsAttribute }
 					min={ 1 }
-					max={ 20 }
+					max={ 100 }
 				/>
 				<TextControl
 					label={ __( 'Time' ) }
 					value={ props.attributes.time }
 					onChange={ updateTimeAttribute }
+				/>
+				<TextControl
+					label={ __( 'Difficulty' ) }
+					value={ props.attributes.difficulty }
+					onChange={ updateDifficultyAttribute }
+				/>
+				<CheckboxControl
+					heading={ __( 'Display Print button' ) }
+					label={ __( 'Display Print' ) }
+					checked={ props.attributes.print }
+					onChange={ updatePrintAttribute }
 				/>
 			</InspectorControls>
 			<TextControl
@@ -110,26 +142,38 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				value={ props.attributes.title }
 				onChange={ updateTitleAttribute }
 			/>
+			<InnerBlocks
+				template={ getImageTemplate() }
+				templateLock="all"
+			/>
 			<ul class="jetpack-recipe-meta">
 				<li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li>
 				<li class="jetpack-recipe-time">
 					<time itemprop="totalTime" datetime={ props.attributes.time }><strong>{ __( 'Duration' ) }: </strong>{ props.attributes.time }</time>
 				</li>
+				<li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li>
+				{ props.attributes.print ? `<li class="jetpack-recipe-print"><a href="#">${ __( 'Print' ) }</a></li>` : '' }
 			</ul>
 			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
 			<RichText
 				value={props.attributes.notes}
 				onChange={updateNotesAttribute}
+				placeholder={ __( 'Add notes to your recipe.' ) }
+				multiline='p'
 			/>
 			<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
 			<RichText
 				value={props.attributes.ingredients}
 				onChange={updateIngredientsAttribute}
+				placeholder={ __( 'Add a list of all the ingredients needed.' ) }
+				multiline='p'
 			/>
 			<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
 			<RichText
 				value={props.attributes.directions}
 				onChange={updateDirectionsAttribute}
+				placeholder={ __( 'Add some directions.' ) }
+				multiline='p'
 			/>
 		</p>;
 	},
@@ -138,11 +182,16 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 	save( props ) {
 		return <div class="hrecipe jetpack-recipe" itemscope itemtype="https://schema.org/Recipe">
 			<h3 class="jetpack-recipe-title" itemprop="name">{ props.attributes.title }</h3>
+			<InnerBlocks.Content
+				template={ getImageTemplate() }
+			/>
 			<ul class="jetpack-recipe-meta">
 				<li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li>
 				<li class="jetpack-recipe-time">
 					<time itemprop="totalTime" datetime={ props.attributes.time }><strong>{ __( 'Duration' ) }: </strong>{ props.attributes.time }</time>
 				</li>
+				<li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li>
+				{ props.attributes.print ? `<li class="jetpack-recipe-print"><a href="#">${ __( 'Print' ) }</a></li>` : '' }
 			</ul>
 			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
 			<RichText.Content

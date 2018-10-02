@@ -37,7 +37,7 @@ function gm18_recipe_block_register_block() {
 	wp_register_script(
 		'gm18_recipe_block',
 		gm18_recipe_block_plugin_url( 'dist/index.js' ),
-		array( 'wp-element', 'wp-blocks', 'wp-editor', 'wp-components' ),
+		array( 'wp-element', 'wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n' ),
 		time()
 	);
 
