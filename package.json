@@ -1,7 +1,7 @@
 {
-  "name": "wp-js-plugin-starter",
+  "name": "GM 2018 Gutenpies",
   "version": "1.0.0",
-  "description": "Just another WordPress plugin starter",
+  "description": "Teaching WordPresses how to cook",
   "main": "src/index.js",
   "private": true,
   "scripts": {
@@ -13,7 +13,7 @@
     "plugin",
     "javascript"
   ],
-  "author": "Riad Benguella",
+  "author": "The Chefs",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.1.0",
