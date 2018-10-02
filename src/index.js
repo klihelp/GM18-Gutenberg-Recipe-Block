@@ -1,17 +1,20 @@
 const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
 
-registerBlockType("gm18_recipe_block/recipe_block", {
-  title: "Hello World",
-  description: "Just another Hello World block",
-  icon: "admin-site",
-  category: "common",
+registerBlockType( 'gm18-recipe-block/recipe-block', {
+	title: 'Recipe',
+	description: 'Embed a recipe with consistent formatting, basic metadata, and an option to print.',
+	icon: 'carrot',
+	category: 'common',
+	keywords: [ 'recipes', 'food', 'jetpack' ],
 
-  edit: function() {
-    return <p>Hello Editor</p>;
-  },
+	// In the admin.
+	edit(props) {
+		return <p>Hello Editor</p>;
+	},
 
-  save: function() {
-    return <p>Hello Frontend</p>;
-  }
+	// After saving, so this is what appears on the frontend.
+	save(props) {
+		return <p>Hello Frontend</p>;
+	}
 });
