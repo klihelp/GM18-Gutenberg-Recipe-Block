@@ -38,7 +38,7 @@ function gm18_recipe_block_register_block() {
 		'gm18_recipe_block',
 		gm18_recipe_block_plugin_url( 'dist/index.js' ),
 		array( 'wp-element', 'wp-blocks', 'wp-editor', 'wp-components' ),
-		GM18GUTENPIES__VERSION
+		time()
 	);
 
 	register_block_type( 'gm18-recipe-block/recipe-block', array(
