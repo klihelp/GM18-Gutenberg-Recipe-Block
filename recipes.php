@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: GM 2018 Gutenpies
- * Plugin URI: https://github.com/youknowriad/wp-js-plugin-starter
- * Description: Just another WordPress plugin starter
+ * Plugin URI: https://automattic.com
+ * Description: Teaching WordPresses how to cook
  * Version: 1.0.0
- * Author: Riad Benguella
+ * Author: The Chefs
  *
- * @package wp-js-plugin-starter
+ * @package gm18-gutenberg-recipe-block
  */
 
  /**
@@ -18,7 +18,7 @@
  *
  * @since 1.0.0
  */
-function wp_js_plugin_starter_url( $path ) {
+function gm18_recipe_block_plugin_url( $path ) {
 	return plugins_url( $path, __FILE__ );
 }
 
@@ -27,19 +27,19 @@ function wp_js_plugin_starter_url( $path ) {
  *
  * @since 1.0.0
  */
-function wp_js_plugin_starter_register_block() {
+function gm18_recipe_block_register_block() {
 	wp_register_script(
-		'wp-js-plugin-starter',
-		wp_js_plugin_starter_url( 'dist/index.js' ),
+		'gm18_recipe_block',
+		gm18_recipe_block_plugin_url( 'dist/index.js' ),
 		array( 'wp-element' )
 	);
 
-	register_block_type( 'wp-js-plugin-starter/hello-world', array(
-			'editor_script' => 'wp-js-plugin-starter',
+	register_block_type( 'gm18_recipe_block/recipe_block', array(
+			'editor_script' => 'gm18_recipe_block',
 	) );
 }
 
 /**
  * Trigger the block registration on init.
  */
-add_action( 'init', 'wp_js_plugin_starter_register_block' );
+add_action( 'init', 'gm18_recipe_block_register_block' );

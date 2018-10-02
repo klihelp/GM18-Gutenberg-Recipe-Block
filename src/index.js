@@ -1,7 +1,7 @@
 const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
 
-registerBlockType("wp-js-plugin-starter/hello-world", {
+registerBlockType("gm18_recipe_block/recipe_block", {
   title: "Hello World",
   description: "Just another Hello World block",
   icon: "admin-site",
