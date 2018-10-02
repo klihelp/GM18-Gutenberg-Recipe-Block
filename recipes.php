@@ -9,6 +9,8 @@
  * @package gm18-gutenberg-recipe-block
  */
 
+defined( 'GM18GUTENPIES__VERSION' ) || define( 'GM18GUTENPIES__VERSION', '1.0.0' );
+
 /**
  * Retrieves a URL to a file in the plugin's directory.
  *
@@ -35,7 +37,8 @@ function gm18_recipe_block_register_block() {
 	wp_register_script(
 		'gm18_recipe_block',
 		gm18_recipe_block_plugin_url( 'dist/index.js' ),
-		array( 'wp-element', 'wp-blocks' )
+		array( 'wp-element', 'wp-blocks', 'wp-editor', 'wp-components' ),
+		GM18GUTENPIES__VERSION
 	);
 
 	register_block_type( 'gm18-recipe-block/recipe-block', array(
