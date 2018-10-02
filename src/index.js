@@ -1,12 +1,14 @@
 const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
 
+import { __ } from '@wordpress/i18n';
+
 registerBlockType( 'gm18-recipe-block/recipe-block', {
-	title: 'Recipe',
-	description: 'Embed a recipe with consistent formatting, basic metadata, and an option to print.',
+	title: __( 'Recipe' ),
+	description: __( 'Embed a recipe with consistent formatting, basic metadata, and an option to print.' ),
 	icon: 'carrot',
 	category: 'common',
-	keywords: [ 'recipes', 'food', 'jetpack' ],
+	keywords: [ __( 'recipes' ), __( 'food' ), __( 'jetpack' ) ],
 
 	// In the admin.
 	edit(props) {
