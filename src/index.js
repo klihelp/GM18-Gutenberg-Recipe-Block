@@ -102,9 +102,6 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
                 templateLock="all"
                 //allowedBlocks={ ALLOWED_BLOCKS }
 			/>
-			<InnerBlocks
-				template={ getRecipeOptionalTemplate() }
-			/>
 		</p>;
 	},
 
