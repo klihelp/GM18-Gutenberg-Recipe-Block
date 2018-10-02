@@ -1,6 +1,6 @@
 const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
-const { RichText, InspectorControls } = wp.editor;
+const { RichText, PlainText, InspectorControls } = wp.editor;
 const { RangeControl } = wp.components;
 
 import { __, sprintf } from '@wordpress/i18n';
@@ -39,30 +39,50 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 		description: {
 			type: 'string',
 		},
+		ingredients: {
+			type: 'array'
+		}
 	},
 
 	// In the admin.
-	edit( props ) {
+	edit( { attributes, setAttributes, className } ) {
+
+		const { servings , title, ingredients } = attributes;
+
 		function updateServingsAttribute( newValue ) {
-			props.setAttributes({
+			setAttributes({
 				servings: newValue
 			});
 		}
+
+        function setNextValues( newValue ) {
+            setAttributes({
+                ingredients: newValue
+            });
+        }
 
 		return <p className='recipe-options'>
 			<InspectorControls>
 				<RangeControl
 					label={ __( 'Servings' ) }
-					value={ props.attributes.servings }
+					value={ servings }
 					initialPosition={ 2 }
 					onChange={ updateServingsAttribute }
 					min={ 1 }
 					max={ 20 }
 				/>
 			</InspectorControls>
-			<textarea>
-				{props.attributes.title}
+			<textarea class="title" >
+				{title}
 			</textarea>
+
+			<h2> Ingredients </h2>
+            <RichText
+        multiline="li"
+        tagName={ 'ul' }
+        onChange={ setNextValues }
+        value={ ingredients }
+        />
 		</p>;
 	},
 
