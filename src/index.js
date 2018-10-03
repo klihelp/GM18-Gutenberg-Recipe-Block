@@ -28,17 +28,7 @@ function getRecipeTemplate( showNotes, showIngredients ) {
 
     }
     if (showIngredients) {
-        template.push([
-            // [ blockName, attributes ]
-
-            [ 'core/heading', {
-                placeholder: 'Recipe Name',
-            }
-            ],
-            [ 'core/paragraph', {
-                placeholder: 'Recipe Notes'
-            }
-            ],
+        template.push(
             [ 'gm18-recipe-block/locked-template-block', {}, [ // Ingredients
                 [ 'core/heading', {
                     content: 'Ingredients',
@@ -48,10 +38,9 @@ function getRecipeTemplate( showNotes, showIngredients ) {
                     placeholder: 'List your ingrediants'
                 }
                 ]
-            ]
-            ]
-        ]);
+            ]]);
     }
+
     return template
 
 }
@@ -176,15 +165,14 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					min={ 1 }
 					max={ 20 }
 				/>
-                { RecipeCheckboxControl('showIngredients', props.attributes.showIngredients, 'Ingredients', 'List Ingredients?')}
+                { RecipeCheckboxControl('showIngredients', props.attributes.showIngredients, 'Ingredients', 'Show Recipe Ingredients?')}
+                { RecipeCheckboxControl('showNotes', props.attributes.showNotes, 'Notes', 'Show Recipe Notes?')}
 			</InspectorControls>
             <InnerBlocks
                 template={ getRecipeTemplate(
-                    true,
-                    true
+                    props.attributes.showNotes,
+                    props.attributes.showIngredients
                 )}
-                // templateLock="all"
-                //allowedBlocks={ ALLOWED_BLOCKS }
             />
 
 		</p>;
