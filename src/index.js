@@ -35,7 +35,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			type: 'string',
 		},
 		print: {
-			type: 'bool',
+			type: 'boolean',
 		},
 		source: {
 			type: 'string',
