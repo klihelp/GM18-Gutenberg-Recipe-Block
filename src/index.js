@@ -116,7 +116,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			});
 		}
 
-		return <div className='recipe-options'>
+		return <div className='hrecipe jetpack-recipe' itemscope itemtype='https://schema.org/Recipe'>
 			<InspectorControls>
 				<RangeControl
 					label={ __( 'Servings' ) }
