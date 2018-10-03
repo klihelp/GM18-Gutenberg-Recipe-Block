@@ -207,20 +207,32 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			<InnerBlocks.Content
 				template={ getImageTemplate() }
 			/>
-			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
-			<RichText.Content
-				value={props.attributes.notes}
-			/>
-			<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
-			<RichText.Content
-				tagName={'ul'}
-				value={props.attributes.ingredients}
-			/>
-			<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
-			<RichText.Content
-				tagName={'ol'}
-				value={props.attributes.directions}
-			/>
+			{ props.attributes.notes &&
+				<div class="jetpack-recipe-notes">
+					<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
+					<RichText.Content
+						value={props.attributes.notes}
+					/>
+				</div>
+			}
+			{ props.attributes.ingredients &&
+				<div class="jetpack-recipe-ingredients">
+					<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
+					<RichText.Content
+						tagName={'ul'}
+						value={props.attributes.ingredients}
+					/>
+				</div>
+			}
+			{ props.attributes.directions &&
+				<div class="jetpack-recipe-directions">
+					<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
+					<RichText.Content
+						tagName={'ol'}
+						value={props.attributes.directions}
+					/>
+				</div>
+			}
 		</div>;
 	}
 });
