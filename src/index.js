@@ -149,11 +149,11 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				templateLock="all"
 			/>
 			<ul class="jetpack-recipe-meta">
-				<li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li>
-				<li class="jetpack-recipe-time">
+				{ props.attributes.servings && <li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li> }
+				{ props.attributes.time && <li class="jetpack-recipe-time">
 					<time itemprop="totalTime" datetime={ props.attributes.time }><strong>{ __( 'Duration' ) }: </strong>{ props.attributes.time }</time>
-				</li>
-				<li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li>
+				</li> }
+				{ props.attributes.difficulty && <li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li> }
 				{ props.attributes.print && <li class="jetpack-recipe-print"><a href="#">{ __( 'Print' ) }</a></li> }
 			</ul>
 			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
@@ -193,12 +193,11 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				template={ getImageTemplate() }
 			/>
 			<ul class="jetpack-recipe-meta">
-				<li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li>
-				<li class="jetpack-recipe-time">
+				{ props.attributes.servings && <li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li> }
+				{ props.attributes.time && <li class="jetpack-recipe-time">
 					<time itemprop="totalTime" datetime={ props.attributes.time }><strong>{ __( 'Duration' ) }: </strong>{ props.attributes.time }</time>
-				</li>
-				<li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li>
-
+				</li> }
+				{ props.attributes.difficulty && <li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li> }
 				{ props.attributes.print && <li class="jetpack-recipe-print"><a href="#">{ __( 'Print' ) }</a></li> }
 			</ul>
 			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
