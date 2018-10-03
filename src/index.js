@@ -51,12 +51,18 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 		},
 		notes: {
 			type: 'string',
+			source: 'children',
+			selector: 'p',
 		},
 		ingredients: {
 			type: 'string',
+			source: 'children',
+			selector: 'li',
 		},
 		directions: {
 			type: 'string',
+			source: 'children',
+			selector: 'li',
 		},
 	},
 
