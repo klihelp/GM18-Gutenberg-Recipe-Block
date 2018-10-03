@@ -137,10 +137,12 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					onChange={ updatePrintAttribute }
 				/>
 			</InspectorControls>
-			<TextControl
-				label={ __( 'Recipe title' ) }
+			<RichText
+				tagName={'h3'}
 				value={ props.attributes.title }
 				onChange={ updateTitleAttribute }
+				placeholder={ __( 'Recipe title' ) }
+				className={'jetpack-recipe-title'}
 			/>
 			<InnerBlocks
 				template={ getImageTemplate() }
@@ -181,7 +183,10 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 	// After saving, so this is what appears on the frontend.
 	save( props ) {
 		return <div class="hrecipe jetpack-recipe" itemscope itemtype="https://schema.org/Recipe">
-			<h3 class="jetpack-recipe-title" itemprop="name">{ props.attributes.title }</h3>
+			<RichText.Content
+					value={ props.attributes.title}
+					className={'jetpack-recipe-title'}
+				/>
 			<InnerBlocks.Content
 				template={ getImageTemplate() }
 			/>
