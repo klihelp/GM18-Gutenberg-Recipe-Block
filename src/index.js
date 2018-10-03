@@ -1,6 +1,6 @@
 const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
-const { RichText, InspectorControls, InnerBlocks } = wp.editor;
+const { RichText, InspectorControls, InnerBlocks, PlainText } = wp.editor;
 const { RangeControl, TextControl, CheckboxControl } = wp.components;
 const { __ } = wp.i18n;
 
@@ -16,26 +16,72 @@ function getImageTemplate() {
 }
 
 
-function getRecipeTemplate( showNotes, showIngredients ) {
+function getRecipeTemplate( props ) {
 
+    function updateTitleAttribute( newValue ) {
+        props.setAttributes({
+            title: newValue
+        });
+    }
 
     let template = [
         // [ blockName, attributes ]
 
         [ 'core/heading', {
-                placeholder: 'Recipe Name',
+            	placeholder: __( 'My Awesome Recipe' ) ,
+				tagName: 'h4',
+				value: props.attributes.title,
+				onChange: updateTitleAttribute,
+            	className: 'jetpack-recipe-title'
             }
-        ]
+        ],
+		['core/columns', {
+    		columns: 4,
+		}, [
+			[ 'core/column', {}, [
+                [ 'gm18-recipe-block/text-block', {
+                    value: 'Servings: 4',
+                	}
+                ]
+			]
+			],
+            [ 'core/column', {}, [
+                [ 'gm18-recipe-block/text-block', {
+                    value: 'Time: 2hr 30mins',
+                }
+                ]
+            ]
+            ],
+            [ 'core/column', {}, [
+                [ 'gm18-recipe-block/text-block', {
+                    value: 'Difficulty: easy',
+                }
+                ]
+            ]
+            ],
+            [ 'core/column', {}, [
+                [ 'gm18-recipe-block/text-block', {
+                    value: 'Print',
+                }
+                ]
+            ]
+            ]
+		]],
+        [ 'core/separator', {}],
+		[ 'core/image', {
+            placeholder: __( 'Upload an image.' )
+        	}]
+
     ];
 
-    if(showNotes) {
+    if(props.attributes.showNotes) {
         template.push([ 'core/paragraph', {
                 placeholder: 'Recipe Notes'
             }
         ]);
 
     }
-    if (showIngredients) {
+    if (props.attributes.showIngredients) {
         template.push(
             [ 'gm18-recipe-block/locked-template-block', {}, [ // Ingredients
                 [ 'core/heading', {
@@ -43,41 +89,129 @@ function getRecipeTemplate( showNotes, showIngredients ) {
                 }
                 ],
                 [ 'core/list', {
-                    placeholder: 'List your ingrediants'
+                    placeholder: 'List your ingredients'
                 }
                 ]
             ]]);
     }
 
+    if (props.attributes.showDirections) {
+        template.push(
+            [ 'gm18-recipe-block/locked-template-block', {}, [ // Ingredients
+                [ 'core/heading', {
+                    content: 'Directions',
+                }
+                ],
+                [ 'core/list', {
+                    placeholder: 'List your directions'
+                }
+                ]
+            ]]);
+    }
+
+    // if(props.attributes.showIngredients) {
+    // 	template.push(
+    // 		['gm18-recipe-block/meta-block',{
+    // 			servings: props.attributes.servings,
+	// 			time: props.attributes.time,
+	// 			difficulty: props.attributes.difficulty,
+	// 			print: props.attributes.print
+	// 		}]
+	// 	);
+	// }
+
     return template
 
 }
 
-function getRecipeNameTemplate() {
-    return [
-        [ 'core/heading', {
-            	placeholder: 'Recipe Name',
-    		}
-    	],
-    	[ 'core/paragraph', {
-    			placeholder: 'Recipe Notes'
-			}
-		] // [ blockName, attributes ]
-    ]
-}
+registerBlockType('gm18-recipe-block/text-block', {
+    title: __( 'Meta Block' ),
 
-function getRecipeIngredientsTemplate() {
-    return [
-        [ 'core/heading', {
-            content: 'Ingredients',
+    category: 'common',
+
+    description: __( 'Block for Recipe meta information' ),
+
+	attributes: {
+    	value: {
+    		type: 'string'
+		}
+	},
+	edit( props ) {
+    	return (
+            <PlainText
+				className="recipe-meta"
+                value={ props.attributes.value }
+                onChange={ ( content ) => props.setAttributes( { value: content } ) }
+            />
+        );
+    },
+	save( props ) {
+		return (
+            <PlainText.Content />
+        );
+	}
+});
+
+
+registerBlockType( 'gm18-recipe-block/meta-block', {
+
+    title: __( 'Meta Block' ),
+
+    category: 'common',
+
+    description: __( 'Block for Recipe meta information' ),
+
+	attributes: {
+        servings: {
+            type: 'string',
+        },
+        time: {
+            type: 'string',
+        },
+        difficulty: {
+            type: 'string',
+        },
+        print: {
+            type: 'boolean',
         }
-        ],
-        [ 'core/list', {
-            placeholder: 'List your ingrediants'
-        }
-        ]
-    ]
-}
+	},
+
+    edit( props ) {
+    	console.log('Servings' + props.attributes.servings);
+		return <div>
+            <ul className="jetpack-recipe-meta">
+                {props.attributes.servings && <li className="jetpack-recipe-servings" itemProp="recipeYield">
+                    <strong>{__('Servings')}: </strong>{props.attributes.servings}</li>}
+                {props.attributes.time && <li className="jetpack-recipe-time">
+                    <time itemProp="totalTime" dateTime={props.attributes.time}>
+                        <strong>{__('Duration')}: </strong>{props.attributes.time}</time>
+                </li>}
+                {props.attributes.difficulty && <li className="jetpack-recipe-difficulty">
+                    <strong>{__('Difficulty')}: </strong>{props.attributes.difficulty}</li>}
+                {props.attributes.print && <li className="jetpack-recipe-print"><a href="#">{__('Print')}</a></li>}
+            </ul>
+		</div>
+    },
+
+    save(props) {
+        return <div>
+            <ul className="jetpack-recipe-meta">
+                {props.attributes.servings && <li className="jetpack-recipe-servings" itemProp="recipeYield">
+                    <strong>{__('Servings')}: </strong>{props.attributes.servings}</li>}
+                {props.attributes.time && <li className="jetpack-recipe-time">
+                    <time itemProp="totalTime" dateTime={props.attributes.time}>
+                        <strong>{__('Duration')}: </strong>{props.attributes.time}</time>
+                </li>}
+                {props.attributes.difficulty && <li className="jetpack-recipe-difficulty">
+                    <strong>{__('Difficulty')}: </strong>{props.attributes.difficulty}</li>}
+                {props.attributes.print && <li className="jetpack-recipe-print"><a href="#">{__('Print')}</a></li>}
+            </ul>
+		</div>
+
+    },
+
+});
+
 registerBlockType( 'gm18-recipe-block/locked-template-block', {
     title: __( 'Reusable Template' ),
 
@@ -117,6 +251,10 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 	        type: 'boolean',
             default: true
         },
+        showDirections: {
+            type: 'boolean',
+            default: true
+        },
 		title: {
 			type: 'string',
 		},
@@ -130,7 +268,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			type: 'string',
 		},
 		print: {
-			type: 'bool',
+			type: 'boolean',
 		},
 		source: {
 			type: 'string',
@@ -145,17 +283,17 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			type: 'string',
 		},
 		notes: {
-			type: 'string',
+			type: 'array',
 			source: 'children',
 			selector: 'p',
 		},
 		ingredients: {
-			type: 'string',
+			type: 'array',
 			source: 'children',
 			selector: 'li',
 		},
 		directions: {
-			type: 'string',
+			type: 'array',
 			source: 'children',
 			selector: 'li',
 		},
@@ -250,56 +388,41 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				/>
                 { RecipeCheckboxControl('showIngredients', props.attributes.showIngredients, 'Ingredients', 'Show Recipe Ingredients?')}
                 { RecipeCheckboxControl('showNotes', props.attributes.showNotes, 'Notes', 'Show Recipe Notes?')}
+                { RecipeCheckboxControl('showDirections', props.attributes.showDirections, 'Directions', 'Show Recipe Directions?')}
 			</InspectorControls>
+
             <InnerBlocks
-                template={ getRecipeTemplate(
-                    props.attributes.showNotes,
-                    props.attributes.showIngredients
-                )}
+                template={ getRecipeTemplate(props) }
+                templateLock="insert"
             />
 
-			<RichText
-				tagName={'h3'}
-				value={ props.attributes.title }
-				onChange={ updateTitleAttribute }
-				placeholder={ __( 'Enter the title of your recipe.' ) }
-				className={'jetpack-recipe-title'}
-			/>
-			<ul class="jetpack-recipe-meta">
-				{ props.attributes.servings && <li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li> }
-				{ props.attributes.time && <li class="jetpack-recipe-time">
-					<time itemprop="totalTime" datetime={ props.attributes.time }><strong>{ __( 'Duration' ) }: </strong>{ props.attributes.time }</time>
-				</li> }
-				{ props.attributes.difficulty && <li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li> }
-				{ props.attributes.print && <li class="jetpack-recipe-print"><a href="#">{ __( 'Print' ) }</a></li> }
-			</ul>
-			<InnerBlocks
-				template={ getImageTemplate() }
-				templateLock="all"
-			/>
-			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
-			<RichText
-				value={props.attributes.notes}
-				onChange={updateNotesAttribute}
-				placeholder={ __( 'Add notes to your recipe.' ) }
-				multiline='p'
-			/>
-			<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
-			<RichText
-				tagName={'ul'}
-				value={props.attributes.ingredients}
-				onChange={updateIngredientsAttribute}
-				placeholder={ __( 'Add a list of all the ingredients needed.' ) }
-				multiline={'li'}
-			/>
-			<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
-			<RichText
-				tagName={'ol'}
-				value={props.attributes.directions}
-				onChange={updateDirectionsAttribute}
-				placeholder={ __( 'Add some directions.' ) }
-				multiline={'li'}
-			/>
+			{/*<InnerBlocks*/}
+				{/*template={ getImageTemplate() }*/}
+				{/*templateLock="all"*/}
+			{/*/>*/}
+			{/*<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>*/}
+			{/*<RichText*/}
+				{/*value={props.attributes.notes}*/}
+				{/*onChange={updateNotesAttribute}*/}
+				{/*placeholder={ __( 'Add notes to your recipe.' ) }*/}
+				{/*multiline='p'*/}
+			{/*/>*/}
+			{/*<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>*/}
+			{/*<RichText*/}
+				{/*tagName={'ul'}*/}
+				{/*value={props.attributes.ingredients}*/}
+				{/*onChange={updateIngredientsAttribute}*/}
+				{/*placeholder={ __( 'Add a list of all the ingredients needed.' ) }*/}
+				{/*multiline={'li'}*/}
+			{/*/>*/}
+			{/*<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>*/}
+			{/*<RichText*/}
+				{/*tagName={'ol'}*/}
+				{/*value={props.attributes.directions}*/}
+				{/*onChange={updateDirectionsAttribute}*/}
+				{/*placeholder={ __( 'Add some directions.' ) }*/}
+				{/*multiline={'li'}*/}
+			{/*/>*/}
 		</div>;
 	},
 
@@ -322,32 +445,32 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			<InnerBlocks.Content
 				template={ getImageTemplate() }
 			/>
-			{ props.attributes.notes &&
-				<div class="jetpack-recipe-notes">
-					<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
-					<RichText.Content
-						value={props.attributes.notes}
-					/>
-				</div>
-			}
-			{ props.attributes.ingredients &&
-				<div class="jetpack-recipe-ingredients">
-					<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
-					<RichText.Content
-						tagName={'ul'}
-						value={props.attributes.ingredients}
-					/>
-				</div>
-			}
-			{ props.attributes.directions &&
-				<div class="jetpack-recipe-directions">
-					<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
-					<RichText.Content
-						tagName={'ol'}
-						value={props.attributes.directions}
-					/>
-				</div>
-			}
+			{/*{ props.attributes.notes &&*/}
+				{/*<div class="jetpack-recipe-notes">*/}
+					{/*<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>*/}
+					{/*<RichText.Content*/}
+						{/*value={props.attributes.notes}*/}
+					{/*/>*/}
+				{/*</div>*/}
+			{/*}*/}
+			{/*{ props.attributes.ingredients &&*/}
+				{/*<div class="jetpack-recipe-ingredients">*/}
+					{/*<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>*/}
+					{/*<RichText.Content*/}
+						{/*tagName={'ul'}*/}
+						{/*value={props.attributes.ingredients}*/}
+					{/*/>*/}
+				{/*</div>*/}
+			{/*}*/}
+			{/*{ props.attributes.directions &&*/}
+				{/*<div class="jetpack-recipe-directions">*/}
+					{/*<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>*/}
+					{/*<RichText.Content*/}
+						{/*tagName={'ol'}*/}
+						{/*value={props.attributes.directions}*/}
+					{/*/>*/}
+				{/*</div>*/}
+			{/*}*/}
 		</div>;
 	}
 });

@@ -41,15 +41,17 @@ function gm18_recipe_block_register_block() {
 		time()
 	);
 
+    wp_register_style(
+        'gm18-recipes-styles',
+        gm18_recipe_block_plugin_url( 'dist/index.css' ),
+        array(),
+        time()
+    );
+
 	register_block_type( 'gm18-recipe-block/recipe-block', array(
 		'editor_script' => 'gm18_recipe_block',
-	) );
+		'style' => 'gm18-recipes-styles',
 
-	wp_register_style(
-		'gm18-recipes-styles',
-		gm18_recipe_block_plugin_url( 'dist/index.css' ),
-		array(),
-		time()
-	);
+	) );
 }
 add_action( 'init', 'gm18_recipe_block_register_block' );
