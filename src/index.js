@@ -178,29 +178,31 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				className={ 'jetpack-recipe-description' }
 				formattingControls={[]}
 			/>
-			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
-			<RichText
-				value={props.attributes.notes}
-				onChange={updateNotesAttribute}
-				placeholder={ __( 'Add notes to your recipe.' ) }
-				multiline='p'
-			/>
-			<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
-			<RichText
-				tagName={'ul'}
-				value={props.attributes.ingredients}
-				onChange={updateIngredientsAttribute}
-				placeholder={ __( 'Add a list of all the ingredients needed.' ) }
-				multiline={'li'}
-			/>
-			<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
-			<RichText
-				tagName={'ol'}
-				value={props.attributes.directions}
-				onChange={updateDirectionsAttribute}
-				placeholder={ __( 'Add some directions.' ) }
-				multiline={'li'}
-			/>
+			<div class="jetpack-recipe-content">
+				<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
+				<RichText
+					value={props.attributes.notes}
+					onChange={updateNotesAttribute}
+					placeholder={ __( 'Add notes to your recipe.' ) }
+					multiline='p'
+				/>
+				<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
+				<RichText
+					tagName={'ul'}
+					value={props.attributes.ingredients}
+					onChange={updateIngredientsAttribute}
+					placeholder={ __( 'Add a list of all the ingredients needed.' ) }
+					multiline={'li'}
+				/>
+				<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
+				<RichText
+					tagName={'ol'}
+					value={props.attributes.directions}
+					onChange={updateDirectionsAttribute}
+					placeholder={ __( 'Add some directions.' ) }
+					multiline={'li'}
+				/>
+			</div>
 		</div>;
 	},
 
@@ -230,32 +232,34 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					/>
 				</p>
 			}
-			{ props.attributes.notes &&
-				<div class="jetpack-recipe-notes">
-					<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
-					<RichText.Content
-						value={props.attributes.notes}
-					/>
-				</div>
-			}
-			{ props.attributes.ingredients &&
-				<div class="jetpack-recipe-ingredients">
-					<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
-					<RichText.Content
-						tagName={'ul'}
-						value={props.attributes.ingredients}
-					/>
-				</div>
-			}
-			{ props.attributes.directions &&
-				<div class="jetpack-recipe-directions">
-					<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
-					<RichText.Content
-						tagName={'ol'}
-						value={props.attributes.directions}
-					/>
-				</div>
-			}
+			<div class="jetpack-recipe-content">
+				{ props.attributes.notes &&
+					<div class="jetpack-recipe-notes">
+						<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
+						<RichText.Content
+							value={props.attributes.notes}
+						/>
+					</div>
+				}
+				{ props.attributes.ingredients &&
+					<div class="jetpack-recipe-ingredients">
+						<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
+						<RichText.Content
+							tagName={'ul'}
+							value={props.attributes.ingredients}
+						/>
+					</div>
+				}
+				{ props.attributes.directions &&
+					<div class="jetpack-recipe-directions">
+						<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
+						<RichText.Content
+							tagName={'ol'}
+							value={props.attributes.directions}
+						/>
+					</div>
+				}
+			</div>
 		</div>;
 	}
 });
