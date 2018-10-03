@@ -149,7 +149,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				/>
 				<TextControl
 					label={ __( 'Time' ) }
-					placeholder={ __( 'How long does it take to make the whole recipe?' ) }
+					placeholder={ __( 'How long does it take?' ) }
 					value={ props.attributes.time }
 					onChange={ updateTimeAttribute }
 				/>
