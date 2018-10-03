@@ -154,7 +154,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					<time itemprop="totalTime" datetime={ props.attributes.time }><strong>{ __( 'Duration' ) }: </strong>{ props.attributes.time }</time>
 				</li>
 				<li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li>
-				{ props.attributes.print ? `<li class="jetpack-recipe-print"><a href="#">${ __( 'Print' ) }</a></li>` : '' }
+				{ props.attributes.print && <li class="jetpack-recipe-print"><a href="#">{ __( 'Print' ) }</a></li> }
 			</ul>
 			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
 			<RichText
@@ -198,7 +198,8 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					<time itemprop="totalTime" datetime={ props.attributes.time }><strong>{ __( 'Duration' ) }: </strong>{ props.attributes.time }</time>
 				</li>
 				<li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li>
-				{ props.attributes.print ? `<li class="jetpack-recipe-print"><a href="#">${ __( 'Print' ) }</a></li>` : '' }
+
+				{ props.attributes.print && <li class="jetpack-recipe-print"><a href="#">{ __( 'Print' ) }</a></li> }
 			</ul>
 			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
 			<RichText.Content
