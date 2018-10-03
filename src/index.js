@@ -48,6 +48,8 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 		},
 		description: {
 			type: 'string',
+			source: 'children',
+			selector: 'p',
 		},
 		notes: {
 			type: 'string',
@@ -95,6 +97,12 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 		function updatePrintAttribute( newValue ) {
 			props.setAttributes({
 				print: newValue
+			});
+		}
+
+		function updateDescriptionAttribute( newValue ) {
+			props.setAttributes({
+				description: newValue
 			});
 		}
 
@@ -162,6 +170,14 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				template={ getImageTemplate() }
 				templateLock="all"
 			/>
+			<RichText
+				tagName={'p'}
+				value={ props.attributes.description }
+				onChange={ updateDescriptionAttribute }
+				placeholder={ __( 'A quick description / summary about your recipe.' ) }
+				className={ 'jetpack-recipe-description' }
+				formattingControls={[]}
+			/>
 			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
 			<RichText
 				value={props.attributes.notes}
@@ -207,6 +223,13 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			<InnerBlocks.Content
 				template={ getImageTemplate() }
 			/>
+			{ props.attributes.description &&
+				<p class="jetpack-recipe-description">
+					<RichText.Content
+						value={props.attributes.description}
+					/>
+				</p>
+			}
 			{ props.attributes.notes &&
 				<div class="jetpack-recipe-notes">
 					<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
