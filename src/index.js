@@ -173,10 +173,11 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			/>
 			<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
 			<RichText
+				tagName={'ol'}
 				value={props.attributes.directions}
 				onChange={updateDirectionsAttribute}
 				placeholder={ __( 'Add some directions.' ) }
-				multiline='p'
+				multiline={'li'}
 			/>
 		</p>;
 	},
@@ -205,10 +206,12 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			/>
 			<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
 			<RichText.Content
+				tagName={'ul'}
 				value={props.attributes.ingredients}
 			/>
 			<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
 			<RichText.Content
+				tagName={'ol'}
 				value={props.attributes.directions}
 			/>
 		</div>;
