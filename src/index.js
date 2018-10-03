@@ -1,6 +1,6 @@
 const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
-const { RichText, InspectorControls, InnerBlocks } = wp.editor;
+const { RichText, InspectorControls, InnerBlocks, PlainText } = wp.editor;
 const { RangeControl, TextControl, CheckboxControl } = wp.components;
 const { __ } = wp.i18n;
 
@@ -39,6 +39,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 		},
 		source: {
 			type: 'string',
+			default: __( 'Source' ),
 		},
 		sourceurl: {
 			type: 'string',
@@ -100,6 +101,18 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			});
 		}
 
+		function updateSourceUrlAttribute( newValue ) {
+			props.setAttributes({
+				sourceurl: newValue
+			});
+		}
+
+		function updateSourceAttribute( newValue ) {
+			props.setAttributes({
+				source: newValue
+			});
+		}
+
 		function updateDescriptionAttribute( newValue ) {
 			props.setAttributes({
 				description: newValue
@@ -150,6 +163,12 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					checked={ props.attributes.print }
 					onChange={ updatePrintAttribute }
 				/>
+				<TextControl
+					label={ __( 'Source' ) }
+					placeholder={ __( 'Link to the source of your recipe' ) }
+					value={ props.attributes.sourceurl }
+					onChange={ updateSourceUrlAttribute }
+				/>
 			</InspectorControls>
 			<RichText
 				tagName={'h3'}
@@ -164,6 +183,13 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 					<time itemprop="totalTime" datetime={ props.attributes.time }><strong>{ __( 'Duration' ) }: </strong>{ props.attributes.time }</time>
 				</li> }
 				{ props.attributes.difficulty && <li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li> }
+				{ props.attributes.sourceurl && <li class="jetpack-recipe-source">
+					<PlainText
+						value={ props.attributes.source }
+						onChange={ updateSourceAttribute }
+					/>
+				</li>
+				}
 				{ props.attributes.print && <li class="jetpack-recipe-print"><a href="#">{ __( 'Print' ) }</a></li> }
 			</ul>
 			<InnerBlocks
@@ -221,6 +247,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				</li> }
 				{ props.attributes.difficulty && <li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li> }
 				{ props.attributes.print && <li class="jetpack-recipe-print"><a href="#">{ __( 'Print' ) }</a></li> }
+				{ props.attributes.sourceurl && <li class="jetpack-recipe-source"><a href={ props.attributes.sourceurl }>{ props.attributes.source }</a></li> }
 			</ul>
 			<InnerBlocks.Content
 				template={ getImageTemplate() }
