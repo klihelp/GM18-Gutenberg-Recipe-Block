@@ -110,7 +110,7 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			});
 		}
 
-		return <p className='recipe-options'>
+		return <div className='recipe-options'>
 			<InspectorControls>
 				<RangeControl
 					label={ __( 'Servings' ) }
@@ -141,12 +141,8 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				tagName={'h3'}
 				value={ props.attributes.title }
 				onChange={ updateTitleAttribute }
-				placeholder={ __( 'Recipe title' ) }
+				placeholder={ __( 'Enter the title of your recipe.' ) }
 				className={'jetpack-recipe-title'}
-			/>
-			<InnerBlocks
-				template={ getImageTemplate() }
-				templateLock="all"
 			/>
 			<ul class="jetpack-recipe-meta">
 				{ props.attributes.servings && <li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li> }
@@ -156,6 +152,10 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				{ props.attributes.difficulty && <li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li> }
 				{ props.attributes.print && <li class="jetpack-recipe-print"><a href="#">{ __( 'Print' ) }</a></li> }
 			</ul>
+			<InnerBlocks
+				template={ getImageTemplate() }
+				templateLock="all"
+			/>
 			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
 			<RichText
 				value={props.attributes.notes}
@@ -179,18 +179,16 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				placeholder={ __( 'Add some directions.' ) }
 				multiline={'li'}
 			/>
-		</p>;
+		</div>;
 	},
 
 	// After saving, so this is what appears on the frontend.
 	save( props ) {
 		return <div class="hrecipe jetpack-recipe" itemscope itemtype="https://schema.org/Recipe">
 			<RichText.Content
-					value={ props.attributes.title}
-					className={'jetpack-recipe-title'}
-				/>
-			<InnerBlocks.Content
-				template={ getImageTemplate() }
+				tagName={'h3'}
+				value={ props.attributes.title}
+				className={'jetpack-recipe-title'}
 			/>
 			<ul class="jetpack-recipe-meta">
 				{ props.attributes.servings && <li class="jetpack-recipe-servings" itemprop="recipeYield"><strong>{ __( 'Servings' ) }: </strong>{ props.attributes.servings }</li> }
@@ -200,6 +198,9 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 				{ props.attributes.difficulty && <li class="jetpack-recipe-difficulty"><strong>{ __( 'Difficulty' ) }: </strong>{ props.attributes.difficulty }</li> }
 				{ props.attributes.print && <li class="jetpack-recipe-print"><a href="#">{ __( 'Print' ) }</a></li> }
 			</ul>
+			<InnerBlocks.Content
+				template={ getImageTemplate() }
+			/>
 			<h4 class="jetpack-recipe-notes-title">{ __( 'Notes' ) }</h4>
 			<RichText.Content
 				value={props.attributes.notes}
