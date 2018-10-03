@@ -165,10 +165,11 @@ registerBlockType( 'gm18-recipe-block/recipe-block', {
 			/>
 			<h4 class="jetpack-recipe-ingredients-title">{ __( 'Ingredients' ) }</h4>
 			<RichText
+				tagName={'ul'}
 				value={props.attributes.ingredients}
 				onChange={updateIngredientsAttribute}
 				placeholder={ __( 'Add a list of all the ingredients needed.' ) }
-				multiline='p'
+				multiline={'li'}
 			/>
 			<h4 class="jetpack-recipe-directions-title">{ __( 'Directions' ) }</h4>
 			<RichText
